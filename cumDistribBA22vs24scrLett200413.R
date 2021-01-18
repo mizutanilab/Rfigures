@@ -1,0 +1,46 @@
+load("YOUR_DATA.RData")
+library(ggplot2)
+
+c9data <- data.frame(value=c(c9ba22$curv))
+c11data <- data.frame(value=c(c11ba22$curv))
+c6data <- data.frame(value=c(c6ba22$curv))
+c15data <- data.frame(value=c(c15ba22$curv))
+c9data24 <- data.frame(value=c(c9ba24$curv))
+c11data24 <- data.frame(value=c(c11ba24$curv))
+c6data24 <- data.frame(value=c(c6ba24$curv))
+c15data24 <- data.frame(value=c(c15ba24$curv))
+names(c9data) <- c("Curvature")
+names(c11data) <- c("Curvature")
+names(c6data) <- c("Curvature")
+names(c15data) <- c("Curvature")
+names(c9data24) <- c("Curvature")
+names(c11data24) <- c("Curvature")
+names(c6data24) <- c("Curvature")
+names(c15data24) <- c("Curvature")
+
+ylim=c(0,1)
+xlim=c(0,2.5)
+xscale=c(0,0.5,1.0,1.5,2.0,2.5)
+yscale=c(0.0,0.5,1.0)
+windowsFonts(FONT1 = windowsFont("Calibri"))
+
+p <- ggplot(c9data, aes(x = Curvature)) + coord_cartesian(xlim=xlim, ylim=ylim) +scale_x_continuous(breaks=xscale) +scale_y_continuous(breaks=yscale)
+p <- p + stat_ecdf(data=c9data24, color="red", size=1.5, linetype=2)
+p <- p + stat_ecdf(data=c11data24, color="orange", size=1.5, linetype=2)
+p <- p + stat_ecdf(data=c6data24, color="cyan", size=1.5, linetype=2)
+p <- p + stat_ecdf(data=c15data24, color="purple", size=1.5, linetype=2)
+p <- p + stat_ecdf(data=c9data, color="red", size=1.5)
+p <- p + stat_ecdf(data=c11data, color="orange", size=1.5)
+p <- p + stat_ecdf(data=c6data, color="cyan", size=1.5)
+p <- p + stat_ecdf(data=c15data, color="purple", size=1.5)
+
+p <- p + theme(legend.position = 'none') + theme(panel.background = element_rect(colour = "black",size=3,fill="transparent"),panel.grid = element_blank(),axis.text.y = element_text(angle = 90, hjust = 0.5),axis.text=element_text(size=36,family="FONT1"),axis.ticks = element_line(size=2),axis.ticks.length = unit(3, "mm"),axis.title = element_text(size=32,family="FONT1")) + xlab(expression(paste("Curvature (u", m^{-1}, ")"))) + ylab("Cumulative probability")
+
+p <- p + annotate("text", x=1.5, y=0.05, label="S1",size=14,family="FONT1",color="red")
+p <-p + annotate("text", x=1.8, y=0.05, label="S2",size=14,family="FONT1",color="orange")
+p <-p + annotate("text", x=2.1, y=0.05, label="S3",size=14,family="FONT1",color="cyan")
+p <-p + annotate("text", x=2.4, y=0.05, label="S4",size=14,family="FONT1",color="purple")
+
+p
+
+ggsave("cumDistribBA22vs24scrLett200413.png")
